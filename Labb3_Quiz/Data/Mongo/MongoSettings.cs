@@ -1,9 +1,9 @@
 ﻿using MongoDB.Driver;
-using Labb3_Quiz_MongoDB.Data.Mongo.Documents;
+using Labb3_Quiz.Data.Mongo.Documents;
 
 namespace Labb3_Quiz_MongoDB.Data.Mongo
 {
-    public class MongoDbContext
+    internal class MongoDbContext
     {
         private readonly IMongoDatabase _database;
 

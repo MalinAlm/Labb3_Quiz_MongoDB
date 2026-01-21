@@ -16,9 +16,10 @@ namespace Labb3_Quiz.Data.Mongo.Documents
 
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public int Id { get; set; }
+        public string Id { get; set; }
+
         [BsonRepresentation(BsonType.String)]
-        public string Difficulty { get; set; }
+        public Difficulty Difficulty { get; set; }
         public int TimeLimitInSeconds { get; set; }
 
         [BsonRepresentation(BsonType.ObjectId)]

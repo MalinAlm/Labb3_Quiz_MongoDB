@@ -12,7 +12,7 @@ namespace Labb3_Quiz.Data.Mongo.Documents
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public int Id { get; set; }
+        public string Id { get; set; }
         [BsonElement("Name")]
         public string Name { get; set; }
 
