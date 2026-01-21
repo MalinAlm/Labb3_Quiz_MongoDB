@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace Labb3_Quiz.Data.Mongo.Repositories
 {
-    internal interface ICategoryRepository
+    internal interface IQuestionPackRepository
     {
-        Task<List<CategoryDocument>> GetAllAsync();
-        Task<CategoryDocument> CreateAsync(CategoryDocument category);
-        Task UpdateAsync(CategoryDocument category);
+        Task<List<QuestionPackDocument>> GetAllAsync();
+        Task<QuestionPackDocument> CreateAsync(QuestionPackDocument questionPack);
+        Task UpdateAsync(QuestionPackDocument questionPack);
         Task DeleteAsync(string id);
     }
 }
