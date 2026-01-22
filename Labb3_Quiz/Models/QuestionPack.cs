@@ -14,6 +14,8 @@ namespace Labb3_Quiz.Models
             Questions = new List<Question>();
         }
 
+
+        public string? Id { get; set; }
         public string Name { get; set; }
         public Difficulty Difficulty { get; set; }
         public int TimeLimitInSeconds { get; set; }

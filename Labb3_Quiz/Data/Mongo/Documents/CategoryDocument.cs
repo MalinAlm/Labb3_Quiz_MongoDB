@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Labb3_Quiz.Data.Mongo.Documents
 {
-    internal class CategoryDocument
+    public class CategoryDocument
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
