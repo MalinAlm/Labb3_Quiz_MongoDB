@@ -11,6 +11,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
+//TODO: 
+//-Fix safe enum parser for difficulty.
+
 namespace Labb3_Quiz.Mapping
 {
     public static class QuestionPackMapper
