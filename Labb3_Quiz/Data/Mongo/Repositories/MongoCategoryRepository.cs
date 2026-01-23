@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Labb3_Quiz.Data.Mongo.Repositories
 {
-    internal class MongoCategoryRepository
+    public class MongoCategoryRepository
     {
         private readonly IMongoCollection<CategoryDocument> _categories;
 

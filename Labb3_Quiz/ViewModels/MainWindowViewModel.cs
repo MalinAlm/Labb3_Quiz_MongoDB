@@ -9,7 +9,7 @@ namespace Labb3_Quiz.ViewModels
 {
     public class MainWindowViewModel : ViewModelBase
     {
-        private readonly DataService _dataService;
+        private readonly MongoQuizDataService _mongoDataService;
         public ObservableCollection<QuestionPackViewModel> Packs { get; } = new();
         public PlayerViewModel PlayerViewModel { get; }
         public ConfigurationViewModel ConfigurationViewModel { get; }
@@ -72,7 +72,8 @@ namespace Labb3_Quiz.ViewModels
         public MainWindowViewModel()
 		{
 
-            _dataService = new DataService();
+            _mongoDataService = CreateMongoDataService();
+
 
             PlayerViewModel = new PlayerViewModel(this);
 			ConfigurationViewModel = new ConfigurationViewModel(this);
@@ -108,6 +109,20 @@ namespace Labb3_Quiz.ViewModels
         public async Task InitializeAsync()
         {
             await LoadPacksAsync();
+        }
+
+        private Services.MongoQuizDataService CreateMongoDataService()
+        {
+            var settings = new Labb3_Quiz_MongoDB.Data.Mongo.MongoSettings
+            {
+                ConnectionString = "mongodb://localhost:27017",
+                DatabaseName = "HenrikMalin"
+            };
+
+            var context = new Labb3_Quiz_MongoDB.Data.Mongo.MongoDbContext(settings);
+            var repo = new Labb3_Quiz.Data.Mongo.Repositories.MongoQuestionPackRepository(context);
+
+            return new Services.MongoQuizDataService(repo);
         }
 
         private void OpenCreateNewPackDialog()
@@ -200,24 +215,32 @@ namespace Labb3_Quiz.ViewModels
 
         private async Task LoadPacksAsync()
         {
-            var packs = await _dataService.LoadPacksAsync();
+            var packs = await _mongoDataService.LoadPacksAsync();
+
+            Packs.Clear();
 
             if (packs.Any())
             {
                 foreach (var pack in packs)
-                {
                     Packs.Add(new QuestionPackViewModel(pack, SaveActivePack, this));
-                }
 
                 ActivePack = Packs.First();
             }
             else
             {
                 var newPack = new QuestionPack("Default Pack");
-                Packs.Add(new QuestionPackViewModel(newPack, SaveActivePack, this));
-                ActivePack = Packs.First();
+                var vm = new QuestionPackViewModel(newPack, SaveActivePack, this);
+
+                Packs.Add(vm);
+                ActivePack = vm;
+
+                await _mongoDataService.UpsertPackAsync(newPack);
             }
+
+            ShowPlayerViewCommand.RaiseCanExecuteChanged();
+            DeletePackCommand.RaiseCanExecuteChanged();
         }
+
 
         public void SaveActivePack()
         {
@@ -229,29 +252,35 @@ namespace Labb3_Quiz.ViewModels
             if (ActivePack == null) return;
 
             ActivePack.SyncToModel();
-
-            await _dataService.SavePacksAsync(Packs.Select(p => p.Model).ToList());   
+            await _mongoDataService.UpsertPackAsync(ActivePack.Model);
         }
 
         public async Task DeleteActivePackAsync()
         {
             if (ActivePack == null) return;
 
-            var result = MessageBox.Show($"Are you sure you want to delete \"{ActivePack.Name}\"?",
-                "Delete Pack", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            var result = MessageBox.Show(
+                $"Are you sure you want to delete \"{ActivePack.Name}\"?",
+                "Delete Pack",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Warning);
 
             if (result != MessageBoxResult.Yes) return;
 
             PlayerViewModel.StopQuiz();
             IsPlayMode = false;
 
+            var idToDelete = ActivePack.Model.Id;
+
             Packs.Remove(ActivePack);
             ActivePack = Packs.FirstOrDefault();
 
-            await _dataService.SavePacksAsync(Packs.Select(p => p.Model).ToList());
+            if (!string.IsNullOrWhiteSpace(idToDelete))
+                await _mongoDataService.DeletePackAsync(idToDelete);
 
             DeletePackCommand.RaiseCanExecuteChanged();
             ShowPlayerViewCommand.RaiseCanExecuteChanged();
         }
-	}
+
+    }
 }

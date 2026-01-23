@@ -6,7 +6,7 @@ using Labb3_Quiz_MongoDB.Data.Mongo;
 
 namespace Labb3_Quiz.Data.Mongo.Repositories
 {
-    internal class MongoQuestionPackRepository : IQuestionPackRepository
+    public class MongoQuestionPackRepository : IQuestionPackRepository
     {
         private readonly IMongoCollection<QuestionPackDocument> _packs;
 

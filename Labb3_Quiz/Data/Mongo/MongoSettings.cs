@@ -3,7 +3,7 @@ using Labb3_Quiz.Data.Mongo.Documents;
 
 namespace Labb3_Quiz_MongoDB.Data.Mongo
 {
-    internal class MongoDbContext
+    public class MongoDbContext
     {
         private readonly IMongoDatabase _database;
 

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Labb3_Quiz.Data.Mongo.Repositories
 {
-    internal interface ICategoryRepository
+    public interface ICategoryRepository
     {
         Task<List<CategoryDocument>> GetAllAsync();
         Task<CategoryDocument> CreateAsync(CategoryDocument category);

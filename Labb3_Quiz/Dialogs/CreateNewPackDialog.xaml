@@ -6,9 +6,10 @@
         xmlns:local="clr-namespace:Labb3_Quiz.Dialogs"
         mc:Ignorable="d"
         ResizeMode="NoResize"
-        Title="New question pack" Height="250" Width="200">
+        Title="New question pack" Height="300" Width="220">
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
@@ -22,15 +23,21 @@
                 />
         </StackPanel>
         <StackPanel Grid.Row="1" Margin="10 0">
+            <Label Content="Categories:"/>
+            <ComboBox 
+                Grid.Row="1" 
+             />
+        </StackPanel>
+        <StackPanel Grid.Row="2" Margin="10 0">
             <Label Content="Difficulty:"/>
             <ComboBox 
-             Grid.Row="1" 
-             ItemsSource="{Binding Difficulties}" 
-             SelectedItem="{Binding Difficulty}" 
-             /> 
+                  Grid.Row="1" 
+                  ItemsSource="{Binding Difficulties}" 
+                  SelectedItem="{Binding Difficulty}" 
+             />
         </StackPanel>
-       
-        <StackPanel Grid.Row="2" Margin="10 10 5 0">
+
+        <StackPanel Grid.Row="3" Margin="10 10 5 0">
             
             <StackPanel Orientation="Horizontal">
                 <Label FontWeight="Bold"  Padding="0" Content="Time limit:"/>
@@ -50,7 +57,7 @@
         </StackPanel>
 
 
-        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" Margin="5 0">
+        <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Center" Margin="5 0">
             <Button 
                 Content="OK"
                 Width="60"

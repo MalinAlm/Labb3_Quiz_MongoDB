@@ -20,7 +20,10 @@ namespace Labb3_Quiz.Mapping
     {
         public static QuestionPack QuestionPackDocumentToModelMap(this QuestionPackDocument doc)
         {
-            var model = new QuestionPack(doc.Name, doc.Difficulty, doc.TimeLimitInSeconds);
+            var model = new QuestionPack(doc.Name, doc.Difficulty, doc.TimeLimitInSeconds)
+            {
+                Id = doc.Id
+            };
 
             if (doc.Questions != null)
             {
@@ -35,6 +38,7 @@ namespace Labb3_Quiz.Mapping
         public static QuestionPackDocument ModelToQuestionDocument(this QuestionPack model)
         {
             QuestionPackDocument _questionPackDocument = new QuestionPackDocument();
+            _questionPackDocument.Id = model.Id;
             _questionPackDocument.Name = model.Name;
             _questionPackDocument.Difficulty = model.Difficulty;
             _questionPackDocument.TimeLimitInSeconds = model.TimeLimitInSeconds;
