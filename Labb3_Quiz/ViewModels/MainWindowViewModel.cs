@@ -1,9 +1,11 @@
-﻿using Labb3_Quiz.Models;    
-using System.Collections.ObjectModel;
-using Labb3_Quiz.Command;
-using System.Windows;
-using Labb3_Quiz.Services;
+﻿using Labb3_Quiz.Command;
+using Labb3_Quiz.Data.Mongo.Documents;
+using Labb3_Quiz.Data.Mongo.Repositories;
 using Labb3_Quiz.Dialogs;
+using Labb3_Quiz.Models;    
+using Labb3_Quiz.Services;
+using System.Collections.ObjectModel;
+using System.Windows;
 
 namespace Labb3_Quiz.ViewModels
 {
@@ -73,7 +75,18 @@ namespace Labb3_Quiz.ViewModels
         public MainWindowViewModel()
 		{
 
-            _mongoDataService = CreateMongoDataService();
+            var settings = new Labb3_Quiz_MongoDB.Data.Mongo.MongoSettings
+            {
+                ConnectionString = "mongodb://localhost:27017",
+                DatabaseName = "HenrikMalin"
+            };
+
+            var context = new Labb3_Quiz_MongoDB.Data.Mongo.MongoDbContext(settings);
+
+            var packRepository = new MongoQuestionPackRepository(context);
+            _mongoDataService = new MongoQuizDataService(packRepository);
+
+            _categoryRepository = new MongoCategoryRepository(context);
 
 
             PlayerViewModel = new PlayerViewModel(this);
@@ -109,21 +122,34 @@ namespace Labb3_Quiz.ViewModels
 
         public async Task InitializeAsync()
         {
+            await SeedCategoriesIfEmptyAsync();
             await LoadPacksAsync();
         }
 
-        private Services.MongoQuizDataService CreateMongoDataService()
+
+
+        private readonly ICategoryRepository _categoryRepository;
+
+        private async Task SeedCategoriesIfEmptyAsync()
         {
-            var settings = new Labb3_Quiz_MongoDB.Data.Mongo.MongoSettings
+            var categories = await _categoryRepository.GetAllAsync();
+            if (categories.Count > 0) return;
+
+            var defaultCategories = new[]
             {
-                ConnectionString = "mongodb://localhost:27017",
-                DatabaseName = "HenrikMalin"
+                "IT",
+                "History",
+                "Science",
+                "Sports"
             };
 
-            var context = new Labb3_Quiz_MongoDB.Data.Mongo.MongoDbContext(settings);
-            var repo = new Labb3_Quiz.Data.Mongo.Repositories.MongoQuestionPackRepository(context);
-
-            return new Services.MongoQuizDataService(repo);
+            foreach (var categoryName in defaultCategories)
+            {
+                await _categoryRepository.CreateAsync(new CategoryDocument
+                {
+                    Name = categoryName
+                });
+            }
         }
 
         private void OpenCreateNewPackDialog()
@@ -284,6 +310,9 @@ namespace Labb3_Quiz.ViewModels
             DeletePackCommand.RaiseCanExecuteChanged();
             ShowPlayerViewCommand.RaiseCanExecuteChanged();
         }
+
+     
+
 
     }
 }
