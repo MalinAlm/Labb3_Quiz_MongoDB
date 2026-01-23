@@ -18,7 +18,8 @@ namespace Labb3_Quiz.Mapping
 {
     public static class QuestionPackMapper
     {
-        public static QuestionPack QuestionPackDocumentToModelMap(this QuestionPackDocument doc)
+
+        public static QuestionPack MongoDBToQuestionPack(this QuestionPackDocument doc)
         {
             var model = new QuestionPack(doc.Name, doc.Difficulty, doc.TimeLimitInSeconds)
             {
@@ -28,35 +29,27 @@ namespace Labb3_Quiz.Mapping
             if (doc.Questions != null)
             {
                 model.Questions = doc.Questions
-                    .Select(qd => qd.QuestionDocumentToModelMap())
+                    .Select(qd => qd.MongoDBToQuestion())
                     .ToList();
             }
 
             return model;
         }
 
-        public static QuestionPackDocument ModelToQuestionDocument(this QuestionPack model)
+
+        public static QuestionPackDocument QuestionPackToMongoDB(this QuestionPack model)
         {
-            QuestionPackDocument _questionPackDocument = new QuestionPackDocument();
-            _questionPackDocument.Id = model.Id;
-            _questionPackDocument.Name = model.Name;
-            _questionPackDocument.Difficulty = model.Difficulty;
-            _questionPackDocument.TimeLimitInSeconds = model.TimeLimitInSeconds;
-
-            if (model.Questions != null)
+            return new QuestionPackDocument
             {
-                // Create a List<QuestionDocument> and map each Question -> QuestionDocument
-                var questionDocList = new List<QuestionDocument>();
-                foreach (var q in model.Questions)
-                {
-                    // use the model -> document mapper
-                    questionDocList.Add(q.ModelToQuestionDocument());
-                }
-
-                _questionPackDocument.Questions = questionDocList;
-            }
-
-            return _questionPackDocument;
+                Id = string.IsNullOrWhiteSpace(model.Id) ? null : model.Id,
+                Name = model.Name,
+                Difficulty = model.Difficulty,
+                TimeLimitInSeconds = model.TimeLimitInSeconds,
+                CategoryName = model.CategoryName,
+                Questions = model.Questions?.Select(q => q.QuestionToMongoDB()).ToList() ?? new()
+            };
         }
+
+
     }
 }

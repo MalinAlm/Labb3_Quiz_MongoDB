@@ -12,6 +12,8 @@ namespace Labb3_Quiz.Models
         public Difficulty Difficulty { get; set; }
         public int TimeLimitInSeconds { get; set; }
 
+        public string? CategoryName { get; set; }
+
         public List<Question> Questions { get; set; }
 
         public QuestionPack(string name, Difficulty difficulty = Difficulty.Medium, int timeLimitInSeconds = 30)

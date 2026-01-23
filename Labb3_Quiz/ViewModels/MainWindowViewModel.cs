@@ -46,6 +46,7 @@ namespace Labb3_Quiz.ViewModels
 
                 ShowPlayerViewCommand.RaiseCanExecuteChanged();
                 DeletePackCommand.RaiseCanExecuteChanged();
+                ImportQuestionsCommand.RaiseCanExecuteChanged(); 
             }
 		}
 
@@ -239,6 +240,8 @@ namespace Labb3_Quiz.ViewModels
 
             ShowPlayerViewCommand.RaiseCanExecuteChanged();
             DeletePackCommand.RaiseCanExecuteChanged();
+            ImportQuestionsCommand.RaiseCanExecuteChanged();
+
         }
 
 

@@ -16,12 +16,12 @@ namespace Labb3_Quiz.Services
         public async Task<List<QuestionPack>> LoadPacksAsync()
         {
             var docs = await _questionPackRepository.GetAllAsync();
-            return docs.Select(d => d.QuestionPackDocumentToModelMap()).ToList();
+            return docs.Select(d => d.MongoDBToQuestionPack()).ToList();
         }
 
         public async Task UpsertPackAsync(QuestionPack pack)
         {
-            var doc = pack.ModelToQuestionDocument();
+            var doc = pack.QuestionPackToMongoDB();
 
             if (string.IsNullOrWhiteSpace(doc.Id))
             {

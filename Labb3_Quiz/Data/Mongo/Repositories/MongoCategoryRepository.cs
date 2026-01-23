@@ -9,40 +9,64 @@ using System.Threading.Tasks;
 
 namespace Labb3_Quiz.Data.Mongo.Repositories
 {
-    public class MongoCategoryRepository
+    public class MongoCategoryRepository : ICategoryRepository
     {
-        private readonly IMongoCollection<CategoryDocument> _categories;
+        private readonly IMongoCollection<CategoryDocument> _categoryCollection;
 
-        public MongoCategoryRepository(MongoDbContext context)
+        public MongoCategoryRepository(MongoDbContext dbContext)
         {
-            _categories = context.Categories;
+            _categoryCollection = dbContext.Categories;
         }
 
-        public async Task<List<CategoryDocument>> GetAllAsync()
-        {
-            return await _categories
+        public Task<List<CategoryDocument>> GetAllAsync() =>
+            _categoryCollection
                 .Find(FilterDefinition<CategoryDocument>.Empty)
+                .SortBy(c => c.Name)
                 .ToListAsync();
-        }
 
         public async Task<CategoryDocument> CreateAsync(CategoryDocument category)
         {
-            await _categories.InsertOneAsync(category);
+            ArgumentNullException.ThrowIfNull(category);
+            if (string.IsNullOrWhiteSpace(category.Name))
+                throw new ArgumentException("Category name cannot be empty.", nameof(category));
+
+            var normalizedName = category.Name.Trim();
+
+            // (valfritt men bra) undvik dubbletter case-insensitive
+            var existing = await _categoryCollection
+                .Find(c => c.Name.ToLower() == normalizedName.ToLower())
+                .FirstOrDefaultAsync();
+
+            if (existing != null)
+                return existing;
+
+            category.Name = normalizedName;
+
+            await _categoryCollection.InsertOneAsync(category);
             return category;
         }
 
-        public async Task UpdateAsync(CategoryDocument category)
+        public Task UpdateAsync(CategoryDocument category)
         {
-            await _categories.ReplaceOneAsync(
+            ArgumentNullException.ThrowIfNull(category);
+            if (string.IsNullOrWhiteSpace(category.Id))
+                throw new ArgumentException("Category id cannot be empty.", nameof(category));
+            if (string.IsNullOrWhiteSpace(category.Name))
+                throw new ArgumentException("Category name cannot be empty.", nameof(category));
+
+            category.Name = category.Name.Trim();
+
+            return _categoryCollection.ReplaceOneAsync(
                 c => c.Id == category.Id,
-                category
-            );
+                category);
         }
 
-        public async Task DeleteAsync(string id)
+        public Task DeleteAsync(string id)
         {
-            await _categories.DeleteOneAsync(c => c.Id == id);
+            if (string.IsNullOrWhiteSpace(id))
+                throw new ArgumentException("Category id cannot be empty.", nameof(id));
+
+            return _categoryCollection.DeleteOneAsync(c => c.Id == id);
         }
     }
 }
-
