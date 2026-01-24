@@ -58,6 +58,12 @@
         </MenuItem>
         <MenuItem Header="_Edit">
             <MenuItem 
+                Header="_Manage Categories"
+                Command="{Binding ManageCategoriesCommand}" 
+                InputGestureText="Ctrl+M" Icon="{fa:Icon Sliders}" 
+                />
+                
+            <MenuItem 
                 Header="Ad_d Question" 
                 Command="{Binding ConfigurationViewModel.AddQuestionCommand}"
                 Icon="{fa:Icon Plus}"

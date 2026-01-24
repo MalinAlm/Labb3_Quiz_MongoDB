@@ -37,7 +37,9 @@
         <KeyBinding Key="Return"
                     Modifiers="Alt"
                     Command="{Binding ToggleFullScreenCommand}" />
-
+        <KeyBinding Key="M"
+                    Modifiers="Ctrl"
+                    Command="{Binding ManageCategoriesCommand}" />
     </Window.InputBindings>
     
     <Grid>

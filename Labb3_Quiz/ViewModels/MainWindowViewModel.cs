@@ -77,6 +77,8 @@ namespace Labb3_Quiz.ViewModels
         public DelegateCommand SelectPackCommand { get; }
         public DelegateCommand DeletePackCommand { get; }
         public DelegateCommand ImportQuestionsCommand { get; }
+        public DelegateCommand ManageCategoriesCommand { get; }
+
 
         public MainWindowViewModel()
 		{
@@ -126,6 +128,7 @@ namespace Labb3_Quiz.ViewModels
             ExitProgramCommand = new DelegateCommand(_ => Application.Current.Shutdown());
             DeletePackCommand = new DelegateCommand(async _ => await DeleteActivePackAsync(), _ => ActivePack != null);
             ImportQuestionsCommand = new DelegateCommand(async _ => await ImportQuestionsAsync(), _ => ActivePack != null);
+            ManageCategoriesCommand = new DelegateCommand(_ => OpenManageCategoriesDialog());
 
         }
 
@@ -134,6 +137,18 @@ namespace Labb3_Quiz.ViewModels
             await _databaseSeeder.EnsureSeedDataAsync();
             await LoadPacksAsync();
         }
+
+        private async void OpenManageCategoriesDialog()
+        {
+            var dialog = new Dialogs.ManageCategoriesDialog();
+
+            var vm = new ManageCategoriesDialogViewModel(_categoryRepository);
+            await vm.InitializeAsync();
+
+            dialog.DataContext = vm;
+            dialog.ShowDialog();
+        }
+
 
         private async void OpenCreateNewPackDialog()
 		{
