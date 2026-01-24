@@ -61,6 +61,7 @@
                 Header="_Manage Categories"
                 Command="{Binding ManageCategoriesCommand}" 
                 InputGestureText="Ctrl+M" Icon="{fa:Icon Sliders}" 
+                IsEnabled="{Binding IsEditMode}" 
                 />
                 
             <MenuItem 
