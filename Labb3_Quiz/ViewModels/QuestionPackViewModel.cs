@@ -24,6 +24,17 @@ namespace Labb3_Quiz.ViewModels
             }
         }
 
+        public string CategoryName
+        {
+            get => _model.CategoryName ?? string.Empty;
+            set
+            {
+                _model.CategoryName = value;
+                RaisePropertyChanged();
+                _saveAction();
+            }
+        }
+
         public Difficulty Difficulty
         {
             get => _model.Difficulty;

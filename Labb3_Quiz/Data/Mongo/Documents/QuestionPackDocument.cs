@@ -25,6 +25,7 @@ namespace Labb3_Quiz.Data.Mongo.Documents
         public Difficulty Difficulty { get; set; }
         public int TimeLimitInSeconds { get; set; }
 
+        [BsonElement("CategoryName")]
         public string? CategoryName { get; set; }
         public List<QuestionDocument> Questions { get; set; } = new();
 

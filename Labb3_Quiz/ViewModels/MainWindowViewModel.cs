@@ -133,19 +133,23 @@ namespace Labb3_Quiz.ViewModels
             await LoadPacksAsync();
         }
 
-        private void OpenCreateNewPackDialog()
+        private async void OpenCreateNewPackDialog()
 		{
 			var dialog = new Dialogs.CreateNewPackDialog();
-			dialog.DataContext = new CreateNewPackDialogViewModel();
 
-			if (dialog.ShowDialog() == true)
+            var vm = new CreateNewPackDialogViewModel(_categoryRepository);
+            await vm.InitializeAsync();
+
+            dialog.DataContext = vm;
+
+            if (dialog.ShowDialog() == true)
 			{
-				var dialogViewModel = (CreateNewPackDialogViewModel)dialog.DataContext;
+                //var dialogViewModel = (CreateNewPackDialogViewModel)dialog.DataContext;
 
-				var newPackModel = new QuestionPack(
-                    dialogViewModel.Name, 
-                    dialogViewModel.Difficulty,     
-                    dialogViewModel.TimeLimitInSeconds);
+                var newPackModel = new QuestionPack(vm.Name, vm.Difficulty, vm.TimeLimitInSeconds)
+                {
+                    CategoryName = vm.SelectedCategory?.Name
+                };
 
                 var newPack = new QuestionPackViewModel(newPackModel, SaveActivePack, this);
                 Packs.Add(newPack);

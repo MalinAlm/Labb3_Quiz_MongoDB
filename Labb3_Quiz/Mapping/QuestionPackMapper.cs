@@ -11,8 +11,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-//TODO: 
-//-Fix safe enum parser for difficulty.
 
 namespace Labb3_Quiz.Mapping
 {
@@ -23,7 +21,8 @@ namespace Labb3_Quiz.Mapping
         {
             var model = new QuestionPack(doc.Name, doc.Difficulty, doc.TimeLimitInSeconds)
             {
-                Id = doc.Id
+                Id = doc.Id,
+                CategoryName = doc.CategoryName
             };
 
             if (doc.Questions != null)

@@ -26,7 +26,16 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <TextBlock Text="{Binding ActivePack.Name}" Grid.Row="0" Grid.Column="0" Margin="20 10" />
+        <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Vertical" Margin="20 10">
+            <TextBlock Text="{Binding ActivePack.Name}" />
+
+            <StackPanel Orientation="Horizontal" Margin="0 4 0 0">
+                <TextBlock Text="Category: " />
+                <TextBlock Text="{Binding ActivePack.CategoryName, TargetNullValue=(none)}"
+                   FontWeight="Bold" />
+            </StackPanel>
+        </StackPanel>
+
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="0" Grid.Column="1" Margin="10 10">
             <Button Content="{fa:Icon Sliders}" Command="{Binding OpenPackOptionsDialogCommand}"/>
             <Button Content="{fa:Icon Plus}" Margin="5 0" Command="{Binding AddQuestionCommand}"/>
