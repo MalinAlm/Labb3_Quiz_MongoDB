@@ -1,4 +1,5 @@
 ﻿using Labb3_Quiz.Command;
+using Labb3_Quiz.Data.Mongo;
 using Labb3_Quiz.Data.Mongo.Documents;
 using Labb3_Quiz.Data.Mongo.Repositories;
 using Labb3_Quiz.Dialogs;
@@ -12,6 +13,9 @@ namespace Labb3_Quiz.ViewModels
     public class MainWindowViewModel : ViewModelBase
     {
         private readonly MongoQuizDataService _mongoDataService;
+        private readonly ICategoryRepository _categoryRepository;
+        private readonly Labb3_Quiz.Data.Mongo.DatabaseSeeder _databaseSeeder;
+
         public ObservableCollection<QuestionPackViewModel> Packs { get; } = new();
         public PlayerViewModel PlayerViewModel { get; }
         public ConfigurationViewModel ConfigurationViewModel { get; }
@@ -81,12 +85,15 @@ namespace Labb3_Quiz.ViewModels
                 DatabaseName = "HenrikMalin"
             };
 
+
             var context = new Labb3_Quiz_MongoDB.Data.Mongo.MongoDbContext(settings);
 
             var packRepository = new MongoQuestionPackRepository(context);
             _mongoDataService = new MongoQuizDataService(packRepository);
 
             _categoryRepository = new MongoCategoryRepository(context);
+            _databaseSeeder = new DatabaseSeeder(_categoryRepository, _mongoDataService);
+
 
 
             PlayerViewModel = new PlayerViewModel(this);
@@ -122,34 +129,8 @@ namespace Labb3_Quiz.ViewModels
 
         public async Task InitializeAsync()
         {
-            await SeedCategoriesIfEmptyAsync();
+            await _databaseSeeder.EnsureSeedDataAsync();
             await LoadPacksAsync();
-        }
-
-
-
-        private readonly ICategoryRepository _categoryRepository;
-
-        private async Task SeedCategoriesIfEmptyAsync()
-        {
-            var categories = await _categoryRepository.GetAllAsync();
-            if (categories.Count > 0) return;
-
-            var defaultCategories = new[]
-            {
-                "IT",
-                "History",
-                "Science",
-                "Sports"
-            };
-
-            foreach (var categoryName in defaultCategories)
-            {
-                await _categoryRepository.CreateAsync(new CategoryDocument
-                {
-                    Name = categoryName
-                });
-            }
         }
 
         private void OpenCreateNewPackDialog()
