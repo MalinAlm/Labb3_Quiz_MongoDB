@@ -20,27 +20,30 @@
         <StackPanel Grid.Row="0" Margin="10 0">
             <Label Content="Pack name:"/>
             <TextBox 
-            Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
+                Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
             />
         </StackPanel>
         <StackPanel Grid.Row="1" Margin="10 0">
             <Label Content="Category:"/>
-            <ComboBox 
-               Grid.Row="1" 
+            <ComboBox
+                ItemsSource="{Binding AvailableCategories}"
+                SelectedItem="{Binding SelectedCategory}"
+                DisplayMemberPath="Name"
             />
+
         </StackPanel>
         <StackPanel Grid.Row="2" Margin="10 0">
             <Label Content="Create new category:"/>
         <TextBox 
             Text="Change category"
-            />
+         />
         </StackPanel>
         <StackPanel Grid.Row="3" Margin="10 0">
             <Label Content="Difficulty:"/>
             <ComboBox 
-         Grid.Row="1" 
-         ItemsSource="{Binding Difficulties}" 
-         SelectedItem="{Binding Difficulty}" 
+                 Grid.Row="1" 
+                 ItemsSource="{Binding Difficulties}" 
+                 SelectedItem="{Binding Difficulty}" 
          />
         </StackPanel>
 
@@ -53,13 +56,13 @@
             </StackPanel>
 
             <Slider 
-            Minimum="5"
-            Maximum="120"
-            Value="{Binding TimeLimitInSeconds, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-            TickFrequency="5"
-                TickPlacement="BottomRight"
-            IsSnapToTickEnabled="True"
-            Margin="0 5 0 5"
+                Minimum="5"
+                Maximum="120"
+                Value="{Binding TimeLimitInSeconds, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                TickFrequency="5"
+                    TickPlacement="BottomRight"
+                IsSnapToTickEnabled="True"
+                Margin="0 5 0 5"
             />
         </StackPanel>
 

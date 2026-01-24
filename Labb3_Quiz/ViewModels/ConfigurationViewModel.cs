@@ -84,20 +84,27 @@ namespace Labb3_Quiz.ViewModels
             
         private bool CanRemoveQuestion() => ActiveQuestion != null;
     
-        private void OpenPackoptionsDialog()
+        private async void OpenPackoptionsDialog()
         {
 
             if (ActivePack == null) return;
 
             var dialog = new Dialogs.PackOptionsDialog();
-            var viewModel = new PackOptionsDialogViewModel(ActivePack.Model);
-            dialog.DataContext = viewModel;
 
+            var viewModel = new PackOptionsDialogViewModel(ActivePack.Model, _mainWindowViewModel.CategoryRepository);
+            await viewModel.InitializeAsync();
+
+            dialog.DataContext = viewModel;
             dialog.ShowDialog();
+
+            viewModel.ApplyChanges(ActivePack.Model);
+
 
             ActivePack.Name = viewModel.Name;
             ActivePack.Difficulty = viewModel.Difficulty;
             ActivePack.TimeLimitInSeconds = viewModel.TimeLimitInSeconds;
+            ActivePack.CategoryName = viewModel.SelectedCategory?.Name ?? string.Empty;
+
 
             _mainWindowViewModel.SaveActivePack();
 

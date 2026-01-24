@@ -14,6 +14,8 @@ namespace Labb3_Quiz.ViewModels
     {
         private readonly MongoQuizDataService _mongoDataService;
         private readonly ICategoryRepository _categoryRepository;
+        public ICategoryRepository CategoryRepository => _categoryRepository;
+
         private readonly Labb3_Quiz.Data.Mongo.DatabaseSeeder _databaseSeeder;
 
         public ObservableCollection<QuestionPackViewModel> Packs { get; } = new();
@@ -144,7 +146,6 @@ namespace Labb3_Quiz.ViewModels
 
             if (dialog.ShowDialog() == true)
 			{
-                //var dialogViewModel = (CreateNewPackDialogViewModel)dialog.DataContext;
 
                 var newPackModel = new QuestionPack(vm.Name, vm.Difficulty, vm.TimeLimitInSeconds)
                 {
