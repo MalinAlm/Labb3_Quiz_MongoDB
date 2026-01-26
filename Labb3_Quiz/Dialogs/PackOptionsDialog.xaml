@@ -7,7 +7,8 @@
         mc:Ignorable="d"
         WindowStartupLocation="CenterOwner"
         ResizeMode="NoResize"
-        Title="Pack Options" Height="300" Width="220">
+        Title="Pack Options" Height="390" Width="350"
+        Style="{StaticResource AppWindowStyle}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -22,21 +23,25 @@
                 Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
             />
         </StackPanel>
-        <StackPanel Grid.Row="1" Margin="10 0">
+        <StackPanel Grid.Row="1" Margin="10 0" HorizontalAlignment="Stretch">
             <Label Content="Category:"/>
             <ComboBox
                 ItemsSource="{Binding AvailableCategories}"
                 SelectedItem="{Binding SelectedCategory}"
                 DisplayMemberPath="Name"
+                HorizontalAlignment="Stretch"
+                Width="Auto"
             />
 
         </StackPanel>
-        <StackPanel Grid.Row="2" Margin="10 0">
+        <StackPanel Grid.Row="2" Margin="10 0" HorizontalAlignment="Stretch">
             <Label Content="Difficulty:"/>
             <ComboBox 
                  Grid.Row="1" 
                  ItemsSource="{Binding Difficulties}" 
                  SelectedItem="{Binding Difficulty}" 
+                 HorizontalAlignment="Stretch"
+                 Width="Auto"
          />
         </StackPanel>
 

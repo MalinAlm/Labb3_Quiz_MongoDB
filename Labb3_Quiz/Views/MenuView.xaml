@@ -7,8 +7,11 @@
              xmlns:local="clr-namespace:Labb3_Quiz.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-             
+
     <Menu>
+        <Menu.Resources>
+            <Style TargetType="MenuItem" BasedOn="{StaticResource DarkMenuItemStyle}"/>
+        </Menu.Resources>
         <MenuItem Header="_File">
             <MenuItem 
                 Header="_New Question Pack" 
@@ -23,11 +26,11 @@
                 ItemsSource="{Binding Packs}"
                 IsEnabled="{Binding IsEditMode}">
                 <MenuItem.ItemContainerStyle>
-                <Style TargetType="MenuItem">
+                    <Style TargetType="MenuItem" BasedOn="{StaticResource DarkMenuItemStyle}">
                     <Setter 
-                        Property="Header" 
-                        Value="{Binding Name}"
-                        />
+                    Property="Header" 
+                    Value="{Binding Name}"
+                    />
                     <Setter 
                         Property="Command" 
                         Value="{Binding DataContext.SelectPackCommand,

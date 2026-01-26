@@ -12,6 +12,8 @@
                 <ResourceDictionary Source="Styles/Controls.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+
             <Style TargetType="Label">
                 <Setter Property="FontWeight" Value="Bold"/>
             </Style>

@@ -84,6 +84,9 @@ namespace Labb3_Quiz.ViewModels
             }
 
             _saveAction();
+
+            _mainWindowViewModel.ShowPlayerViewCommand.RaiseCanExecuteChanged();
+
         }
 
         public bool IsPlayable()

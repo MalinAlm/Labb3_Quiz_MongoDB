@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:Labb3_Quiz.Dialogs"
         mc:Ignorable="d"
         ResizeMode="NoResize"
-        Title="New question pack" Height="300" Width="220">
+        Title="New question pack" Height="390" Width="350"
+        Style="{StaticResource AppWindowStyle}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -22,13 +23,16 @@
                 Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
                 />
         </StackPanel>
-        <StackPanel Grid.Row="1" Margin="10 0">
+        <StackPanel Grid.Row="1" Margin="10 0" HorizontalAlignment="Stretch">
             <Label Content="Categories:"/>
             <ComboBox 
                 Grid.Row="1"
                 ItemsSource="{Binding AvailableCategories}"
                 SelectedItem="{Binding SelectedCategory}"
                 DisplayMemberPath="Name"
+                HorizontalAlignment="Stretch"
+                Width="Auto"
+                Margin="0,0,0,6"
              />
         </StackPanel>
         <StackPanel Grid.Row="2" Margin="10 0">
@@ -37,6 +41,9 @@
                   Grid.Row="1" 
                   ItemsSource="{Binding Difficulties}" 
                   SelectedItem="{Binding Difficulty}" 
+                  HorizontalAlignment="Stretch"
+                  Width="Auto"
+                Margin="0,0,0,6"
              />
         </StackPanel>
 

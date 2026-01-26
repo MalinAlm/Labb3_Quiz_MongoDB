@@ -7,8 +7,12 @@
         xmlns:views="clr-namespace:Labb3_Quiz.Views"
         mc:Ignorable="d"
         d:Height="800" d:Width="400"
-        Title="Quiz App" Height="450" Width="800" 
-        Loaded="MainWindow_Loaded">
+        Title="Quiz App" Height="500" Width="800" 
+        Loaded="MainWindow_Loaded"
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        Background="{StaticResource AppBackgroundBrush}"
+        >
 
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="VisibilityConverter"/>
@@ -44,19 +48,35 @@
     
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="36"/>
             <RowDefinition Height="Auto"/>  
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <views:MenuView DataContext="{Binding}" Grid.Row="0" />
+        <Grid Grid.Row="0" Background="Transparent" MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
+            <TextBlock Text="Quiz App"
+                   VerticalAlignment="Center"
+                   Margin="12,0"
+                   Foreground="White"
+                   FontWeight="SemiBold"/>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,4,8,4">
+                <Button Style="{StaticResource GlassTitleBarButton}" Content="—" Width="28" Height="28" Click="Minimize_Click"/>
+                <Button Style="{StaticResource GlassTitleBarButton}" Content="▢" Width="28" Height="28" Margin="6,0,0,0" Click="Maximize_Click"/>
+                <Button Style="{StaticResource GlassTitleBarButton}" Content="✕" Width="28" Height="28" Margin="6,0,0,0" Click="Close_Click"/>
+            </StackPanel>
+
+        </Grid>
+
+        <views:MenuView DataContext="{Binding}" Grid.Row="1" />
 
         <views:ConfigurationView 
-            Grid.Row="1" 
+            Grid.Row="2" 
             DataContext="{Binding ConfigurationViewModel}"
             Visibility="{Binding DataContext.IsConfigurationViewVisible,RelativeSource={RelativeSource AncestorType=Window} ,Converter={StaticResource VisibilityConverter}}"
             />
         <views:PlayerView 
-            Grid.Row="1" 
+            Grid.Row="2" 
             DataContext="{Binding PlayerViewModel}"
             Visibility="{Binding DataContext.IsPlayerViewVisible, RelativeSource={RelativeSource AncestorType=Window},Converter={StaticResource VisibilityConverter}}"
             />

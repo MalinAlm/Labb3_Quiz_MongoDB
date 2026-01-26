@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Labb3_Quiz.Dialogs"
         mc:Ignorable="d"
-        Title="Import Questions From Open Trivia" Height="320" Width="280">
+        Title="Import Questions From Open Trivia" Height="390" Width="350"
+        Style="{StaticResource AppWindowStyle}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -23,14 +24,20 @@
             <Label Content="Category:" Margin="10 0"/>
             <ComboBox 
                 x:Name="CategoryComboBox"
-                Margin="10 0 10 0"/>
+                Margin="10 0 10 0"
+                HorizontalAlignment="Stretch"
+                Width="Auto"
+                />
         </StackPanel>
-        
-        <StackPanel Grid.Row="1" Grid.ColumnSpan="2" VerticalAlignment="Center">
+
+        <StackPanel Grid.Row="1" Grid.ColumnSpan="2" VerticalAlignment="Center"  Margin="10 0" HorizontalAlignment="Stretch">
             <Label Content="Difficulty:" Margin="10 0"/>
             <ComboBox 
                 x:Name="DifficultyCombobox"
-                Margin="10 0 10 0" />
+                Margin="10 0 10 0" 
+                HorizontalAlignment="Stretch"
+                Width="Auto"
+                />
         </StackPanel>
     
         <Label 
