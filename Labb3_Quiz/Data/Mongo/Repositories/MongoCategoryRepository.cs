@@ -1,11 +1,6 @@
 ﻿using Labb3_Quiz.Data.Mongo.Documents;
 using Labb3_Quiz_MongoDB.Data.Mongo;
 using MongoDB.Driver;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Labb3_Quiz.Data.Mongo.Repositories
 {

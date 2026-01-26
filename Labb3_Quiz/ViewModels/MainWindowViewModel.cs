@@ -1,8 +1,6 @@
 ﻿using Labb3_Quiz.Command;
 using Labb3_Quiz.Data.Mongo;
-using Labb3_Quiz.Data.Mongo.Documents;
 using Labb3_Quiz.Data.Mongo.Repositories;
-using Labb3_Quiz.Dialogs;
 using Labb3_Quiz.Models;    
 using Labb3_Quiz.Services;
 using System.Collections.ObjectModel;

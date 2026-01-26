@@ -1,15 +1,5 @@
 ﻿using Labb3_Quiz.Data.Mongo.Documents;
-using Labb3_Quiz.Dialogs;
 using Labb3_Quiz.Models;
-using Labb3_Quiz.Utilities;
-using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 
 
 namespace Labb3_Quiz.Mapping

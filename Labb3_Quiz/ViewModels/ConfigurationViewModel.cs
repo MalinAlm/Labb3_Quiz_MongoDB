@@ -1,7 +1,5 @@
 ﻿using Labb3_Quiz.Command;
 using Labb3_Quiz.Models;
-using System.Security.Cryptography.X509Certificates;
-using System.Windows.Input;
 
 namespace Labb3_Quiz.ViewModels
 {
