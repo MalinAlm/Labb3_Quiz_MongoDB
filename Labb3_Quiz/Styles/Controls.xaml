@@ -19,7 +19,7 @@
     
     <!--Scrollbar opacity-->
     <Style TargetType="ScrollBar">
-        <Setter Property="Opacity" Value="0.35"/>
+        <Setter Property="Opacity" Value="0.55"/>
     </Style>
 
     <!-- Default text color -->
