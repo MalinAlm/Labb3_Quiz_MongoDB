@@ -68,7 +68,7 @@
                 HorizontalAlignment="Left"
                 Margin="15"
                 Command="{Binding DataContext.ShowConfigurationViewCommand, RelativeSource={RelativeSource AncestorType=Window}}"              
-                IsEnabled="{Binding IsPlayMode}"/>
+              />
             <TextBlock 
                 Text="{Binding TimerText}"
                 FontSize="30"
