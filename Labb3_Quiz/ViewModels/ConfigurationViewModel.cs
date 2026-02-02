@@ -59,6 +59,10 @@ namespace Labb3_Quiz.ViewModels
         {
             if (ActivePack == null) return;
 
+            // warn once before destructive edits
+            if (!CanProceedWithQuestionContentChange())
+                return;
+
             var newQuestionModel = new Question("New Question", string.Empty, string.Empty, string.Empty, string.Empty);
 
             var newQuestionViewModel = new QuestionViewModel(newQuestionModel, _mainWindowViewModel.SaveActivePack,
@@ -74,12 +78,21 @@ namespace Labb3_Quiz.ViewModels
         {
             if (ActivePack == null || ActiveQuestion == null) return;
 
+            // warn once before destructive edits
+            if (!CanProceedWithQuestionContentChange())
+                return;
+
             ActivePack.Questions.Remove(ActiveQuestion);
             ActiveQuestion = null;
 
             _mainWindowViewModel.ShowPlayerViewCommand.RaiseCanExecuteChanged();
         }
-            
+
+        private bool CanProceedWithQuestionContentChange()
+        {
+            return _mainWindowViewModel.ConfirmRunInvalidationIfNeeded();
+        }
+
         private bool CanRemoveQuestion() => ActiveQuestion != null;
     
         private async void OpenPackoptionsDialog()

@@ -40,6 +40,24 @@ namespace Labb3_Quiz.ViewModels
 
         public bool IsEditMode => !_isPlayMode;
 
+
+        // OBS: Stub for now - Track if active pack has runs – always false until QuizRuns are implemented
+        // will be replaced when QuizRuns is implemented (Phase 5)
+        private bool _activePackHasRuns;
+
+        public bool ActivePackHasRuns
+        {
+            get => _activePackHasRuns;
+            private set
+            {
+                if (_activePackHasRuns != value)
+                {
+                    _activePackHasRuns = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
+
         private QuestionPackViewModel? _activePack;
         public QuestionPackViewModel? ActivePack
 		{
@@ -47,7 +65,16 @@ namespace Labb3_Quiz.ViewModels
 			set {
 				_activePack = value;
 				RaisePropertyChanged();
-				PlayerViewModel?.RaisePropertyChanged(nameof(PlayerViewModel.ActivePack));
+
+                //  STUB: does this pack have runs?
+                ActivePackHasRuns = false;
+
+                if (_activePack != null)
+                {
+                    _activePack.RunInvalidationConfirmed = false;
+                }
+
+                PlayerViewModel?.RaisePropertyChanged(nameof(PlayerViewModel.ActivePack));
                 ConfigurationViewModel?.RaisePropertyChanged(nameof(ConfigurationViewModel.ActivePack));
 
                 ShowPlayerViewCommand.RaiseCanExecuteChanged();
@@ -184,6 +211,10 @@ namespace Labb3_Quiz.ViewModels
                 return;
             }
 
+            // warn once before destructive edits
+            if (!ConfirmRunInvalidationIfNeeded())
+                return;
+
             try
             {
                 var api = new Services.TriviaApiService();
@@ -310,7 +341,36 @@ namespace Labb3_Quiz.ViewModels
             ShowPlayerViewCommand.RaiseCanExecuteChanged();
         }
 
-     
+
+        public bool ConfirmRunInvalidationIfNeeded()
+        {
+            // No pack 
+            if (ActivePack == null)
+                return false;
+
+            // If there are no runs, allow immediately
+            if (!ActivePackHasRuns)
+                return true;
+
+            // If user already confirmed for this pack during this session, allow
+            if (ActivePack.RunInvalidationConfirmed)
+                return true;
+
+            var result = MessageBox.Show(
+                "This pack has saved play sessions.\n\n" +
+                "If you continue, all saved sessions will be erased.\n\n" +
+                "Do you want to continue?",
+                "Warning",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Warning);
+
+            if (result != MessageBoxResult.Yes)
+                return false;
+
+            // Mark confirmed so we don't spam warnings
+            ActivePack.RunInvalidationConfirmed = true;
+            return true;
+        }
 
 
     }
