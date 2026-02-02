@@ -60,7 +60,15 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-        
+
+            <Button 
+                Content="Exit Quiz"
+                Width="100"
+                Height="40"
+                HorizontalAlignment="Left"
+                Margin="15"
+                Command="{Binding DataContext.ShowConfigurationViewCommand, RelativeSource={RelativeSource AncestorType=Window}}"              
+                IsEnabled="{Binding IsPlayMode}"/>
             <TextBlock 
                 Text="{Binding TimerText}"
                 FontSize="30"
