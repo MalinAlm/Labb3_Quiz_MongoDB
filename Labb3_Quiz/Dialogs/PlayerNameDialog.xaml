@@ -6,10 +6,11 @@
         mc:Ignorable="d"
         Title="Enter player name"
         Width="360"
-        Height="180"
+        Height="200"
         WindowStartupLocation="CenterOwner"
         ResizeMode="NoResize"
-        WindowStyle="SingleBorderWindow">
+        WindowStyle="SingleBorderWindow"
+        Style="{StaticResource AppWindowStyle}">
 
     <Grid Margin="20">
         <Grid.RowDefinitions>
@@ -26,7 +27,7 @@
         <TextBox
             Grid.Row="1"
             MinWidth="240"
-            Height="28"
+            Height="35"
             Text="{Binding PlayerName, UpdateSourceTrigger=PropertyChanged}"
             />
 
@@ -39,6 +40,7 @@
             <Button
                 Content="Cancel"
                 Width="80"
+                Height="40"
                 Margin="0 0 10 0"
                 Command="{Binding CancelCommand}"
                 />
@@ -46,6 +48,7 @@
             <Button
                 Content="OK"
                 Width="80"
+                Height="40"
                 IsDefault="True"
                 Command="{Binding OkCommand}"
                 />
