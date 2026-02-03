@@ -73,7 +73,7 @@
                 Width="60"
                 Height="30"
                 Margin="5"
-                Command="{Binding ConfirmCommand}"
+                Command="{Binding OkCommand}"
                 IsDefault="True"
                 />  
             <Button 

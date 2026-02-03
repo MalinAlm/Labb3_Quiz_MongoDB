@@ -1,22 +1,11 @@
-﻿using MongoDB.Driver;
-using Labb3_Quiz.Data.Mongo.Documents;
+﻿// File: Data/Mongo/MongoSettings.cs
+// Purpose: Holds MongoDB connection settings (connection string + database name)
 
 namespace Labb3_Quiz_MongoDB.Data.Mongo
 {
-    public class MongoDbContext
+    public class MongoSettings
     {
-        private readonly IMongoDatabase _database;
-
-        public MongoDbContext(MongoSettings settings)
-        {
-            var client = new MongoClient(settings.ConnectionString);
-            _database = client.GetDatabase(settings.DatabaseName);
-        }
-
-        public IMongoCollection<QuestionPackDocument> QuestionPacks =>
-            _database.GetCollection<QuestionPackDocument>("QuestionPacks");
-
-        public IMongoCollection<CategoryDocument> Categories =>
-            _database.GetCollection<CategoryDocument>("Categories");
+        public string ConnectionString { get; set; } = string.Empty;
+        public string DatabaseName { get; set; } = string.Empty;
     }
 }
