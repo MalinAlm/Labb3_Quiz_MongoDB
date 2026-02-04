@@ -1,6 +1,4 @@
-﻿// File: Data/Mongo/Repositories/MongoQuizRunRepository.cs
-// Mongo repository for QuizRuns (VG): insert completed runs, Top5, per-question answer stats, and deletions.
-
+﻿
 using Labb3_Quiz.Data.Mongo.Documents;
 using Labb3_Quiz.Services;
 using Labb3_Quiz_MongoDB.Data.Mongo;
@@ -16,9 +14,7 @@ namespace Labb3_Quiz.Data.Mongo.Repositories
         {
             ArgumentNullException.ThrowIfNull(mongoDbContext);
 
-            // MongoDbContext must expose:
-            // public IMongoCollection<QuizRunDocument> QuizRuns { get; }
-            _quizRuns = mongoDbContext.QuizRuns;
+           _quizRuns = mongoDbContext.QuizRuns;
         }
 
         public async Task<bool> AnyRunsByPackIdAsync(string packId)
@@ -26,7 +22,6 @@ namespace Labb3_Quiz.Data.Mongo.Repositories
             if (string.IsNullOrWhiteSpace(packId))
                 return false;
 
-            // Faster than CountDocumentsAsync for "any?"
             return await _quizRuns
                 .Find(run => run.PackId == packId)
                 .Limit(1)
@@ -86,7 +81,10 @@ namespace Labb3_Quiz.Data.Mongo.Repositories
             if (string.IsNullOrWhiteSpace(packId) || topN <= 0)
                 return new List<Top5EntryDto>();
 
-            // Sort: Most correct first, then best (lowest) time, then earliest completion
+            // Sort:
+            // 1. Most correct
+            // 2. then best (lowest) time
+            // 3. then earliest completion
             var topRuns = await _quizRuns
                 .Find(run => run.PackId == packId)
                 .SortByDescending(run => run.CorrectCount)
@@ -110,7 +108,7 @@ namespace Labb3_Quiz.Data.Mongo.Repositories
                 return new List<string>();
 
             // Server-side filter:
-            // Only return runs that have at least one matching answer entry.
+            // Only return runs that have at least one 
             var filter = Builders<QuizRunDocument>.Filter.And(
                 Builders<QuizRunDocument>.Filter.Eq(run => run.PackId, packId),
                 Builders<QuizRunDocument>.Filter.ElemMatch(
@@ -119,7 +117,7 @@ namespace Labb3_Quiz.Data.Mongo.Repositories
                 )
             );
 
-            // Only fetch Answers (projection)
+            // Only fetch Answers 
             var projectedAnswers = await _quizRuns
                 .Find(filter)
                 .Project(run => run.Answers)

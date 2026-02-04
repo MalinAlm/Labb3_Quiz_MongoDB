@@ -10,10 +10,10 @@ namespace Labb3_Quiz.Converters
             (Brush)new BrushConverter().ConvertFromString("#33FFFFFF"); // samma som button-style
 
         private static readonly Brush CorrectBorder =
-            (Brush)new BrushConverter().ConvertFromString("#7CFF6B"); // grön men lite neon
+            (Brush)new BrushConverter().ConvertFromString("#7CFF6B"); // grön men lite neon också
 
         private static readonly Brush IncorrectBorder =
-            (Brush)new BrushConverter().ConvertFromString("#FF4C4C"); // röd
+            (Brush)new BrushConverter().ConvertFromString("#FF4C4C"); // rödaktig
 
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
@@ -35,7 +35,7 @@ namespace Labb3_Quiz.Converters
             if (buttonText == clickedAnswer)
                 return IncorrectBorder;
 
-            // övriga -> default border
+            // övriga -> defaulta  bordern
             return DefaultBorder;
         }
 

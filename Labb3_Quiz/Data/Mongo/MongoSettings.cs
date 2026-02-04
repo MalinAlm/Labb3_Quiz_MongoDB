@@ -1,6 +1,4 @@
-﻿// File: Data/Mongo/MongoSettings.cs
-// Purpose: Holds MongoDB connection settings (connection string + database name)
-
+﻿
 namespace Labb3_Quiz_MongoDB.Data.Mongo
 {
     public class MongoSettings

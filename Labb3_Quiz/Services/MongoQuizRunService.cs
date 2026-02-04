@@ -1,15 +1,17 @@
-﻿// File: Services/MongoQuizRunService.cs
-// VG service: saves completed runs, Top5 leaderboard, per-answer statistics, and run deletion.
-//
-// NOTE:
-// This service depends on an IQuizRunRepository abstraction.
-// The Mongo implementation will live in Data.Mongo.Repositories and match this interface.
-
+﻿
+using Labb3_Quiz.Data.Mongo.Repositories;
+using Labb3_Quiz.Models;
+using MongoDB.Driver;
+using MongoDB.Driver.Core.Misc;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Metrics;
 using System.Linq;
+using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
-using Labb3_Quiz.Data.Mongo.Repositories;
+using System.Windows.Forms.Design.Behavior;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ToolTip;
 
 namespace Labb3_Quiz.Services
 {
@@ -40,7 +42,7 @@ namespace Labb3_Quiz.Services
             return _quizRunRepository.DeleteRunsByPackIdAsync(packId);
         }
 
-        // VG #1: store the completed run
+        //store the completed run
         public Task SaveCompletedRunAsync(
             string packId,
             string playerName,
@@ -53,7 +55,7 @@ namespace Labb3_Quiz.Services
 
             var normalizedPlayerName = (playerName ?? string.Empty).Trim();
             if (string.IsNullOrWhiteSpace(normalizedPlayerName))
-                normalizedPlayerName = "Anonymous"; // fail-safe (UI should prevent empty)
+                normalizedPlayerName = "Anonymous"; // fail-safe (UI should prevent empty anyways...)
 
             if (totalTimeSeconds < 0)
                 totalTimeSeconds = 0;
@@ -63,8 +65,8 @@ namespace Labb3_Quiz.Services
 
             answers ??= new List<QuizRunAnswerDto>();
 
-            // Defensive cleanup: keep empty string for timeout if you want,
-            // but ensure indices are valid and text isn't null.
+            // Def-cleanup: keep empty string for timeout 
+            // but valid and notNull
             var cleanedAnswers = answers
                 .Where(answer => answer.QuestionIndexInPack >= 0)
                 .Select(answer => new QuizRunAnswerDto(
@@ -81,7 +83,6 @@ namespace Labb3_Quiz.Services
                 answers: cleanedAnswers);
         }
 
-        // VG #1: Top5 sorted by most correct, then fastest time, then earliest run
         public Task<List<Top5EntryDto>> GetTop5Async(string packId)
         {
             if (string.IsNullOrWhiteSpace(packId))
@@ -90,8 +91,14 @@ namespace Labb3_Quiz.Services
             return _quizRunRepository.GetTop5Async(packId, topN: 5);
         }
 
-        // VG #2: for each answer option, how many previous players chose it.
-        // Identity = answer text (shuffle does not matter).
+        //TODO – GetAnswerCountsAsync
+        // identity                                                                             [V]
+        // handle tiomeouts                                                                     [V]
+        // Support for Repository  (all answers / pack + Qindex)                                 [V]
+        // Efficiency for polish                                                                [V]
+        // Make sure error safe (emtpy dictionary if DB gives trouble)                          [V]
+        // UI completeness – Ensure all 4 answer options appear with count 0 if never chosen.   [V]
+
         public async Task<Dictionary<string, int>> GetAnswerCountsAsync(string packId, int questionIndexInPack)
         {
             if (string.IsNullOrWhiteSpace(packId) || questionIndexInPack < 0)
@@ -116,12 +123,10 @@ namespace Labb3_Quiz.Services
         }
     }
 
-    // ===== DTOs (used by PlayerViewModel + repository) =====
-
     // One chosen answer by the player for one question (stored by stable question index in pack)
     public sealed record QuizRunAnswerDto(int QuestionIndexInPack, string ChosenAnswerText);
 
-    // Entry for leaderboard
+    // Leaderboard top 5 record
     public sealed record Top5EntryDto(string PlayerName, int CorrectCount, int TotalTimeSeconds, DateTime CreatedUtc);
 
 }

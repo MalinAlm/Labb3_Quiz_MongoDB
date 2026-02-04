@@ -5,6 +5,7 @@ using System.Windows.Data;
 
 namespace Labb3_Quiz.Converters
 {
+   
     public class AnswerEqualsClickedToVisibilityConverter : IMultiValueConverter
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)

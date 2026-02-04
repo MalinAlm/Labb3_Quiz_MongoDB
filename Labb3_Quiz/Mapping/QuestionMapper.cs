@@ -21,8 +21,6 @@ namespace Labb3_Quiz.Mapping
                 incorrectAnswer3);
         }
 
-
-
         public static QuestionDocument QuestionToMongoDB(this Question model)
         {
             return new QuestionDocument

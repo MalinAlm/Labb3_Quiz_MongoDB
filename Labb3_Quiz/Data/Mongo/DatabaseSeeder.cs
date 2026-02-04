@@ -44,6 +44,7 @@ namespace Labb3_Quiz.Data.Mongo
                 CategoryName = "IT",
                 Questions = new List<Question>
                 {
+                    // new Question("Is Fredrik 1337 ;D ? ", "yes!", "no", "no.jpg", "nopedyno"), 
                     new Question("Vad står CPU för?",
                         "Central Processing Unit",
                         "Computer Personal Unit",

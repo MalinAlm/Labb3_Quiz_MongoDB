@@ -27,7 +27,7 @@ namespace Labb3_Quiz.Data.Mongo.Repositories
 
             var normalizedName = category.Name.Trim();
 
-            // (valfritt men bra) undvik dubbletter case-insensitive
+            // undvik dubbletter case-insensitive med normalizedName.ToLower()
             var existing = await _categoryCollection
                 .Find(c => c.Name.ToLower() == normalizedName.ToLower())
                 .FirstOrDefaultAsync();

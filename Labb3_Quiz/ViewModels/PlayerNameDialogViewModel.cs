@@ -19,14 +19,13 @@ namespace Labb3_Quiz.ViewModels
         public DelegateCommand OkCommand { get; }
         public DelegateCommand CancelCommand { get; }
 
-        /// <summary>
-        /// Set by the dialog (code-behind) to close with DialogResult = true
-        /// </summary>
+        
+        // Set by the dialog (code-behind) to close with DialogResult = true
+        
         public Action? RequestCloseOk { get; set; }
-
-        /// <summary>
-        /// Set by the dialog (code-behind) to close with DialogResult = false
-        /// </summary>
+        
+        // Set by the dialog (code-behind) to close with DialogResult = false
+        
         public Action? RequestCloseCancel { get; set; }
 
         public PlayerNameDialogViewModel(string? initialName = null)

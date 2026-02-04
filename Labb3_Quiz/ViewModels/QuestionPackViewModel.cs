@@ -1,6 +1,4 @@
-﻿// File: ViewModels/QuestionPackViewModel.cs
-
-using Labb3_Quiz.Models;
+﻿using Labb3_Quiz.Models;
 using Labb3_Quiz.Utilities;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -13,9 +11,7 @@ namespace Labb3_Quiz.ViewModels
         private readonly Action _saveAction;
         private readonly MainWindowViewModel _mainWindowViewModel;
 
-        // --- Step 0.3 additions (runs/fingerprint state) ---
-
-        // Fingerprint of question-content that was last saved/loaded (questions only).
+         // Fingerprint of question-content that was last saved/loaded (questions only).
         // OBS: excludes Name/Difficulty/Category/TimeLimit (per our plan).
         private string _lastSavedQuestionsFingerprint = string.Empty;
         public string LastSavedQuestionsFingerprint
@@ -29,7 +25,6 @@ namespace Labb3_Quiz.ViewModels
         }
 
         // True after user accepted “this will erase sessions” warning once.
-        // (we will use this in Step 0.4/0.5)
         private bool _runInvalidationConfirmed;
         public bool RunInvalidationConfirmed
         {
@@ -40,9 +35,6 @@ namespace Labb3_Quiz.ViewModels
                 RaisePropertyChanged();
             }
         }
-
-        // --- Existing VM props ---
-
         public string Name
         {
             get => _model.Name;

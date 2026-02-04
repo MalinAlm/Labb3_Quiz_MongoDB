@@ -1,6 +1,4 @@
-﻿// File: ViewModels/MainWindowViewModel.cs
-
-using Labb3_Quiz.Command;
+﻿using Labb3_Quiz.Command;
 using Labb3_Quiz.Data.Mongo;
 using Labb3_Quiz.Data.Mongo.Repositories;
 using Labb3_Quiz.Models;
@@ -24,7 +22,7 @@ namespace Labb3_Quiz.ViewModels
 
         private readonly DatabaseSeeder _databaseSeeder;
 
-        // VG: QuizRuns service (Top5, stats, deletions, etc.)
+        // Extra service to run Quiz
         private readonly MongoQuizRunService _quizRunService;
 
         public ObservableCollection<QuestionPackViewModel> Packs { get; } = new();
@@ -128,7 +126,6 @@ namespace Labb3_Quiz.ViewModels
             _categoryRepository = new MongoCategoryRepository(context);
             _databaseSeeder = new DatabaseSeeder(_categoryRepository, _mongoDataService);
 
-            // VG: runs repo/service
             var runRepository = new MongoQuizRunRepository(context);
             _quizRunService = new MongoQuizRunService(runRepository);
 
@@ -180,8 +177,7 @@ namespace Labb3_Quiz.ViewModels
         }
 
         // NOTE:
-        // This method is intentionally NON-PUBLIC because PlayerViewModel currently calls it via reflection
-        // (BindingFlags.NonPublic). Do not change its name or visibility unless you also update PlayerViewModel.
+        // (BindingFlags.NonPublic)
         private async Task RefreshActivePackHasRunsAsync()
         {
             var packId = ActivePack?.Model?.Id;

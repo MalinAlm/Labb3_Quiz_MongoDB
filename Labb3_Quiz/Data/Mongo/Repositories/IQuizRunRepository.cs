@@ -1,7 +1,4 @@
-﻿// File: Data/Mongo/Repositories/IQuizRunRepository.cs
-// Purpose: Repository contract for QuizRuns (VG).
-// NOTE: Must be public + interface (not a class), so Services can depend on it.
-
+﻿
 using Labb3_Quiz.Services;
 
 namespace Labb3_Quiz.Data.Mongo.Repositories
@@ -22,7 +19,7 @@ namespace Labb3_Quiz.Data.Mongo.Repositories
 
         Task<List<Top5EntryDto>> GetTop5Async(string packId, int topN);
 
-        // Returns all chosen answers for a specific question index across all completed runs for that pack.
+        // Returns all chosen answers for a specific question index across ALL  completed runs for that pack.
         Task<List<string>> GetChosenAnswersForQuestionAsync(string packId, int questionIndexInPack);
     }
 }

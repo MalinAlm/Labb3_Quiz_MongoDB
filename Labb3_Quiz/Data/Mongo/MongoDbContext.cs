@@ -1,15 +1,11 @@
-﻿// File: Data/Mongo/MongoDbContext.cs
-// (Namespace is already correct for your solution structure.)
+﻿
 
 using Labb3_Quiz.Data.Mongo.Documents;
 using MongoDB.Driver;
 
 namespace Labb3_Quiz_MongoDB.Data.Mongo
 {
-    /// <summary>
-    /// Central MongoDB context.
-    /// Responsible for exposing typed collections used by the application.
-    /// </summary>
+
     public class MongoDbContext
     {
         private readonly IMongoDatabase _database;
@@ -29,7 +25,6 @@ namespace Labb3_Quiz_MongoDB.Data.Mongo
         }
 
         // ===== Collections =====
-        // Note: MongoDB will create collections on first insert if they don't exist yet.
 
         public IMongoCollection<QuestionPackDocument> QuestionPacks =>
             _database.GetCollection<QuestionPackDocument>("QuestionPacks");
@@ -37,10 +32,8 @@ namespace Labb3_Quiz_MongoDB.Data.Mongo
         public IMongoCollection<CategoryDocument> Categories =>
             _database.GetCollection<CategoryDocument>("Categories");
 
-        /// <summary>
-        /// Stores completed quiz runs (one document per playthrough).
-        /// Used for Top5, statistics, and run invalidation.
-        /// </summary>
+             // Stores completed quiz runs (one document per playthrough).
+        // Used for Top5 later
         public IMongoCollection<QuizRunDocument> QuizRuns =>
             _database.GetCollection<QuizRunDocument>("QuizRuns");
     }

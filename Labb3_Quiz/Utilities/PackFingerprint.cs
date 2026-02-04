@@ -1,8 +1,5 @@
-﻿// File: Utilities/PackFingerprint.cs
-// Purpose: Compute fingerprint ONLY from question content.
-// Excludes: Name, Difficulty, Category, TimeLimit
-// Swenglish comments, readable variable names 👌
-
+﻿// Compute fingerprint ONLY from question content.
+// This means Exclude!!!: Name, Difficulty, Category, TimeLimit
 using System.Security.Cryptography;
 using System.Text;
 using Labb3_Quiz.Models;
@@ -39,7 +36,6 @@ namespace Labb3_Quiz.Utilities
                              .Append('|');
 
                 // ALWAYS 3 incorrect answers – order matters
-                // If array is null or wrong length, we still produce a stable output (defensive)
                 var incorrectAnswers = question.IncorrectAnswers ?? Array.Empty<string>();
 
                 for (int answerIndex = 0; answerIndex < 3; answerIndex++)
@@ -55,7 +51,7 @@ namespace Labb3_Quiz.Utilities
                                  .Append('|');
                 }
 
-                stringBuilder.AppendLine(); // delimiter per question
+                stringBuilder.AppendLine(); 
             }
 
             return ComputeSha256Hex(stringBuilder.ToString());
@@ -66,7 +62,7 @@ namespace Labb3_Quiz.Utilities
             if (string.IsNullOrWhiteSpace(value))
                 return string.Empty;
 
-            // Trim + normalize newlines so Windows/Linux doesn't cause hash diffs
+            // Trim + normalize new line so Windows doesn't cause hash diffs
             return value.Trim()
                         .Replace("\r\n", "\n")
                         .Replace("\r", "\n");

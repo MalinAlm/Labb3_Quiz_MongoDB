@@ -1,5 +1,4 @@
-﻿// File: ViewModels/PlayerViewModel.cs
-
+﻿
 using Labb3_Quiz.Command;
 using Labb3_Quiz.Data.Mongo.Repositories;
 using Labb3_Quiz.Services;
@@ -35,7 +34,6 @@ namespace Labb3_Quiz.ViewModels
         private int _currentQuestionIndexInRun;   // 0-based index in _shuffledQuestions
         private int _currentQuestionIndexInPack;  // 0-based index in ActivePack.Questions (stable for stats)
 
-        // VG: Who is playing
         private string _playerName = string.Empty;
         public string PlayerName
         {
@@ -47,18 +45,14 @@ namespace Labb3_Quiz.ViewModels
             }
         }
 
-        // VG: Track what the player chose per question (stable by question index in pack)
+        //  Track what the player chose per question (stable by question index in pack)
         private readonly List<RunAnswerEntry> _runAnswers = new();
-
-        // Services (VG)
-        // NOTE: Kept self-contained so this file compiles without requiring more plumbing.
         private readonly MongoQuizRunService _quizRunService;
 
         // Cancellation for the "3 second feedback pause"
         private CancellationTokenSource? _feedbackDelayCancellationTokenSource;
 
         // ===== Bindable state =====
-
         private QuestionViewModel? _activeQuestion;
         public QuestionViewModel? ActiveQuestion
         {
@@ -205,7 +199,7 @@ namespace Labb3_Quiz.ViewModels
             }
         }
 
-        // VG: show Top5 after run finished (kept inside ResultText => no UI changes required)
+        // show Top5 after run finished (kept inside ResultText => no UI changes required)
         private string _top5Text = string.Empty;
         public string Top5Text
         {
@@ -495,7 +489,7 @@ namespace Labb3_Quiz.ViewModels
             ActiveQuestion = null;
             QuizFinished = true;
 
-            // VG #1: Save completed run (ONLY if pack has an Id)
+            //  Save completed run (ONLY if pack has an Id)
             var packId = ActivePack?.Model?.Id;
             if (!string.IsNullOrWhiteSpace(packId))
             {
@@ -510,7 +504,7 @@ namespace Labb3_Quiz.ViewModels
                         .Select(a => new QuizRunAnswerDto(a.QuestionIndexInPack, a.ChosenAnswerText))
                         .ToList());
 
-                // VG #1: Refresh Top5 on result screen
+                //  Refresh Top5 on result screen
                 var top5Entries = await _quizRunService.GetTop5Async(packId);
                 Top5Text = FormatTop5(top5Entries);
 
