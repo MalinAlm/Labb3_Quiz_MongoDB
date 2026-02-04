@@ -104,6 +104,14 @@ namespace Labb3_Quiz.ViewModels
             }
         }
 
+        private IDictionary<string, int> _answerStats = new Dictionary<string, int>();
+        public IDictionary<string, int> AnswerStats
+        {
+            get => _answerStats;
+            private set { _answerStats = value; RaisePropertyChanged(); }
+        }
+
+
         private List<string> _answerOptions = new() { "", "", "", "" };
         public List<string> AnswerOptions
         {
@@ -186,7 +194,6 @@ namespace Labb3_Quiz.ViewModels
             private set { _feedbackStatsText = value; RaisePropertyChanged(); }
         }
 
-
         private Brush _feedbackColor = Brushes.Black;
         public Brush FeedbackColor
         {
@@ -264,8 +271,9 @@ namespace Labb3_Quiz.ViewModels
             Top5Text = string.Empty;
 
             FeedbackHeaderText = string.Empty;
-            FeedbackStatsText = string.Empty;
             FeedbackColor = Brushes.Black;
+            AnswerStats = new Dictionary<string, int>();
+
 
             ClickedAnswer = null;
             CorrectAnswer = null;
@@ -339,8 +347,8 @@ namespace Labb3_Quiz.ViewModels
             await PauseForFeedbackAsync();
 
             FeedbackHeaderText = string.Empty;
-            FeedbackStatsText = string.Empty;
             FeedbackColor = Brushes.Black;
+            AnswerStats = new Dictionary<string, int>();
 
 
             LoadNextQuestion();
@@ -362,6 +370,10 @@ namespace Labb3_Quiz.ViewModels
 
             var isCorrect = string.Equals(selectedAnswerText, ActiveQuestion.CorrectAnswer, StringComparison.Ordinal);
 
+            if (isCorrect) Score++;
+
+            RecordAnswerForStats(selectedAnswerText);
+
             FeedbackHeaderText = BuildFeedbackHeader(isCorrect, ActiveQuestion.CorrectAnswer);
             FeedbackColor = isCorrect ? Brushes.LightGreen : Brushes.Red;
 
@@ -372,24 +384,23 @@ namespace Labb3_Quiz.ViewModels
                     packId: packId,
                     questionIndexInPack: _currentQuestionIndexInPack);
 
-                FeedbackStatsText = BuildFeedbackStats(optionCountsByAnswerText);
+                AnswerStats = optionCountsByAnswerText;
             }
             else
             {
-                FeedbackStatsText = string.Empty;
+                AnswerStats = new Dictionary<string, int>();
             }
 
 
-            //FeedbackColor = isCorrect ? Brushes.LightGreen : Brushes.Red;
-
             await PauseForFeedbackAsync();
+
+
+            FeedbackHeaderText = string.Empty;
+            FeedbackColor = Brushes.Black;
+            AnswerStats = new Dictionary<string, int>();
 
             ClickedAnswer = null;
             CorrectAnswer = null;
-
-            FeedbackHeaderText = string.Empty;
-            FeedbackStatsText = string.Empty;
-            FeedbackColor = Brushes.Black;
 
 
             LoadNextQuestion();
@@ -544,8 +555,8 @@ namespace Labb3_Quiz.ViewModels
             CorrectAnswer = null;
 
             FeedbackHeaderText = string.Empty;
-            FeedbackStatsText = string.Empty;
             FeedbackColor = Brushes.Black;
+            AnswerStats = new Dictionary<string, int>();
 
 
             _currentQuestionIndexInRun = 0;
@@ -566,19 +577,19 @@ namespace Labb3_Quiz.ViewModels
                 : $"Incorrect answer! Correct was: {correctAnswerText}";
         }
 
-        private static string BuildFeedbackStats(Dictionary<string, int> optionCountsByAnswerText)
-        {
-            var lines = optionCountsByAnswerText
-                .OrderByDescending(x => x.Value)
-                .ThenBy(x => x.Key, StringComparer.Ordinal)
-                .Select(x => $"{x.Key}: {x.Value}")
-                .ToList();
+        //private static string BuildFeedbackStats(Dictionary<string, int> optionCountsByAnswerText)
+        //{
+        //    var lines = optionCountsByAnswerText
+        //        .OrderByDescending(x => x.Value)
+        //        .ThenBy(x => x.Key, StringComparer.Ordinal)
+        //        .Select(x => $"{x.Key}: {x.Value}")
+        //        .ToList();
 
-            if (lines.Count == 0)
-                return "(No previous players yet)";
+        //    if (lines.Count == 0)
+        //        return "(No previous players yet)";
 
-            return "Players picked:\n" + string.Join("\n", lines);
-        }
+        //    return "Players picked:\n" + string.Join("\n", lines);
+        //}
 
 
         private static string FormatTop5(List<Top5EntryDto> top5Entries)

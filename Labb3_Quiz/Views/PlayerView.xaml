@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:Labb3_Quiz.Views"
              xmlns:conv="clr-namespace:Labb3_Quiz.Converters"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800"
+             d:DesignHeight="480" d:DesignWidth="800"
              DataContext="{Binding PlayerViewModel}">
 
     <UserControl.Resources>
@@ -14,6 +14,7 @@
         <conv:AnswerToColorsConverter x:Key="AnswerToColorsConverter"/>
         <conv:InverseBoolToVisibilityConverter x:Key="InverseBoolToVisibilityConverter"/>
         <conv:AnswerEqualsClickedToVisibilityConverter x:Key="AnswerEqualsClickedToVisibilityConverter"/>
+        <conv:AnswerStatsLookupConverter x:Key="AnswerStatsLookupConverter"/>
 
     </UserControl.Resources>
 
@@ -155,18 +156,28 @@
                                    HorizontalAlignment="Center"/>
                     </Button>
                     <TextBlock Grid.Row="1"
-                               Text="{Binding FeedbackStatsText}"
-                               Foreground="{StaticResource AppTextMutedBrush}"
-                               FontWeight="Bold"
-                               HorizontalAlignment="Center"
-                               Margin="0,4,0,0">
-                        <TextBlock.Visibility>
-                            <MultiBinding Converter="{StaticResource AnswerEqualsClickedToVisibilityConverter}">
-                                <Binding Path="ClickedAnswer"/>
+           FontWeight="Bold"
+           HorizontalAlignment="Center"
+           Margin="0,4,0,0"
+           TextAlignment="Center"
+           TextWrapping="Wrap">
+
+                        <TextBlock.Text>
+                            <MultiBinding Converter="{StaticResource AnswerStatsLookupConverter}">
+                                <Binding Path="AnswerStats"/>
                                 <Binding Path="AnswerOptions[0]"/>
+                            </MultiBinding>
+                        </TextBlock.Text>
+
+                        <TextBlock.Visibility>
+                            <MultiBinding Converter="{StaticResource AnswerEqualsClickedToVisibilityConverter}"
+                      ConverterParameter="AnyClicked">
+                                <Binding Path="ClickedAnswer"/>
                             </MultiBinding>
                         </TextBlock.Visibility>
                     </TextBlock>
+
+
 
                 </Grid>
 
@@ -198,19 +209,30 @@
                                    VerticalAlignment="Center"
                                    HorizontalAlignment="Center"/>
                     </Button>
+                    
                     <TextBlock Grid.Row="1"
-                               Text="{Binding FeedbackStatsText}"
-                               Foreground="{StaticResource AppTextMutedBrush}"
-                               FontWeight="Bold"
-                               HorizontalAlignment="Center"
-                               Margin="0,4,0,0">
-                        <TextBlock.Visibility>
-                            <MultiBinding Converter="{StaticResource AnswerEqualsClickedToVisibilityConverter}">
-                                <Binding Path="ClickedAnswer"/>
+           FontWeight="Bold"
+           HorizontalAlignment="Center"
+           Margin="0,4,0,0"
+           TextAlignment="Center"
+           TextWrapping="Wrap">
+
+                        <TextBlock.Text>
+                            <MultiBinding Converter="{StaticResource AnswerStatsLookupConverter}">
+                                <Binding Path="AnswerStats"/>
                                 <Binding Path="AnswerOptions[1]"/>
+                            </MultiBinding>
+                        </TextBlock.Text>
+
+                        <TextBlock.Visibility>
+                            <MultiBinding Converter="{StaticResource AnswerEqualsClickedToVisibilityConverter}"
+                      ConverterParameter="AnyClicked">
+                                <Binding Path="ClickedAnswer"/>
                             </MultiBinding>
                         </TextBlock.Visibility>
                     </TextBlock>
+
+
 
                 </Grid>
 
@@ -242,19 +264,30 @@
                                    VerticalAlignment="Center"
                                    HorizontalAlignment="Center"/>
                     </Button>
+
                     <TextBlock Grid.Row="1"
-                               Text="{Binding FeedbackStatsText}"
-                               Foreground="{StaticResource AppTextMutedBrush}"
-                               FontWeight="Bold"
-                               HorizontalAlignment="Center"
-                               Margin="0,4,0,0">
-                        <TextBlock.Visibility>
-                            <MultiBinding Converter="{StaticResource AnswerEqualsClickedToVisibilityConverter}">
-                                <Binding Path="ClickedAnswer"/>
+           FontWeight="Bold"
+           HorizontalAlignment="Center"
+           Margin="0,4,0,0"
+           TextAlignment="Center"
+           TextWrapping="Wrap">
+
+                        <TextBlock.Text>
+                            <MultiBinding Converter="{StaticResource AnswerStatsLookupConverter}">
+                                <Binding Path="AnswerStats"/>
                                 <Binding Path="AnswerOptions[2]"/>
+                            </MultiBinding>
+                        </TextBlock.Text>
+
+                        <TextBlock.Visibility>
+                            <MultiBinding Converter="{StaticResource AnswerEqualsClickedToVisibilityConverter}"
+                      ConverterParameter="AnyClicked">
+                                <Binding Path="ClickedAnswer"/>
                             </MultiBinding>
                         </TextBlock.Visibility>
                     </TextBlock>
+
+
 
                 </Grid>
 
@@ -286,19 +319,30 @@
                                    VerticalAlignment="Center"
                                    HorizontalAlignment="Center"/>
                     </Button>
+
                     <TextBlock Grid.Row="1"
-                               Text="{Binding FeedbackStatsText}"
-                               Foreground="{StaticResource AppTextMutedBrush}"
-                               FontWeight="Bold"
-                               HorizontalAlignment="Center"
-                               Margin="0,4,0,0">
-                        <TextBlock.Visibility>
-                            <MultiBinding Converter="{StaticResource AnswerEqualsClickedToVisibilityConverter}">
-                                <Binding Path="ClickedAnswer"/>
+           FontWeight="Bold"
+           HorizontalAlignment="Center"
+           Margin="0,4,0,0"
+           TextAlignment="Center"
+           TextWrapping="Wrap">
+
+                        <TextBlock.Text>
+                            <MultiBinding Converter="{StaticResource AnswerStatsLookupConverter}">
+                                <Binding Path="AnswerStats"/>
                                 <Binding Path="AnswerOptions[3]"/>
+                            </MultiBinding>
+                        </TextBlock.Text>
+
+                        <TextBlock.Visibility>
+                            <MultiBinding Converter="{StaticResource AnswerEqualsClickedToVisibilityConverter}"
+                      ConverterParameter="AnyClicked">
+                                <Binding Path="ClickedAnswer"/>
                             </MultiBinding>
                         </TextBlock.Visibility>
                     </TextBlock>
+
+
 
                 </Grid>
             </Grid>
