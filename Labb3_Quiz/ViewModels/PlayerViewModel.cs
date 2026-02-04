@@ -172,6 +172,21 @@ namespace Labb3_Quiz.ViewModels
             }
         }
 
+        private string _feedbackHeaderText = string.Empty;
+        public string FeedbackHeaderText
+        {
+            get => _feedbackHeaderText;
+            private set { _feedbackHeaderText = value; RaisePropertyChanged(); }
+        }
+
+        private string _feedbackStatsText = string.Empty;
+        public string FeedbackStatsText
+        {
+            get => _feedbackStatsText;
+            private set { _feedbackStatsText = value; RaisePropertyChanged(); }
+        }
+
+
         private Brush _feedbackColor = Brushes.Black;
         public Brush FeedbackColor
         {
@@ -248,7 +263,8 @@ namespace Labb3_Quiz.ViewModels
             Score = 0;
             Top5Text = string.Empty;
 
-            FeedbackText = string.Empty;
+            FeedbackHeaderText = string.Empty;
+            FeedbackStatsText = string.Empty;
             FeedbackColor = Brushes.Black;
 
             ClickedAnswer = null;
@@ -315,13 +331,17 @@ namespace Labb3_Quiz.ViewModels
             // Record a "no answer" as empty string
             RecordAnswerForStats(selectedAnswerText: string.Empty);
 
-            FeedbackText = "Time's up!";
+            FeedbackHeaderText = "Time's up!";
+            FeedbackStatsText = string.Empty;
             FeedbackColor = Brushes.OrangeRed;
+
 
             await PauseForFeedbackAsync();
 
-            FeedbackText = string.Empty;
+            FeedbackHeaderText = string.Empty;
+            FeedbackStatsText = string.Empty;
             FeedbackColor = Brushes.Black;
+
 
             LoadNextQuestion();
         }
@@ -341,13 +361,10 @@ namespace Labb3_Quiz.ViewModels
             _questionCountdownTimer.Stop();
 
             var isCorrect = string.Equals(selectedAnswerText, ActiveQuestion.CorrectAnswer, StringComparison.Ordinal);
-            if (isCorrect)
-                Score++;
 
-            // VG: record answer for later run-save + stats
-            RecordAnswerForStats(selectedAnswerText);
+            FeedbackHeaderText = BuildFeedbackHeader(isCorrect, ActiveQuestion.CorrectAnswer);
+            FeedbackColor = isCorrect ? Brushes.LightGreen : Brushes.Red;
 
-            // VG #2: show statistics based on previous players (by answer text, shuffle-safe)
             var packId = ActivePack?.Model?.Id;
             if (!string.IsNullOrWhiteSpace(packId))
             {
@@ -355,24 +372,25 @@ namespace Labb3_Quiz.ViewModels
                     packId: packId,
                     questionIndexInPack: _currentQuestionIndexInPack);
 
-                FeedbackText = BuildFeedbackWithStats(isCorrect, ActiveQuestion.CorrectAnswer, optionCountsByAnswerText);
+                FeedbackStatsText = BuildFeedbackStats(optionCountsByAnswerText);
             }
             else
             {
-                FeedbackText = isCorrect
-                    ? "Correct answer!"
-                    : $"Incorrect answer! Correct was: {ActiveQuestion.CorrectAnswer}";
+                FeedbackStatsText = string.Empty;
             }
 
-            FeedbackColor = isCorrect ? Brushes.LightGreen : Brushes.Red;
+
+            //FeedbackColor = isCorrect ? Brushes.LightGreen : Brushes.Red;
 
             await PauseForFeedbackAsync();
 
             ClickedAnswer = null;
             CorrectAnswer = null;
 
-            FeedbackText = string.Empty;
+            FeedbackHeaderText = string.Empty;
+            FeedbackStatsText = string.Empty;
             FeedbackColor = Brushes.Black;
+
 
             LoadNextQuestion();
             CanAnswer = true;
@@ -525,8 +543,10 @@ namespace Labb3_Quiz.ViewModels
             ClickedAnswer = null;
             CorrectAnswer = null;
 
-            FeedbackText = string.Empty;
+            FeedbackHeaderText = string.Empty;
+            FeedbackStatsText = string.Empty;
             FeedbackColor = Brushes.Black;
+
 
             _currentQuestionIndexInRun = 0;
             _currentQuestionIndexInPack = 0;
@@ -539,29 +559,27 @@ namespace Labb3_Quiz.ViewModels
             QuizFinished = false;
         }
 
-        private static string BuildFeedbackWithStats(
-            bool isCorrect,
-            string correctAnswerText,
-            Dictionary<string, int> optionCountsByAnswerText)
+        private static string BuildFeedbackHeader(bool isCorrect, string correctAnswerText)
         {
-            var header = isCorrect
+            return isCorrect
                 ? "Correct answer!"
                 : $"Incorrect answer! Correct was: {correctAnswerText}";
+        }
 
-            var lines = new List<string>();
-
-            foreach (var entry in optionCountsByAnswerText
-                         .OrderByDescending(x => x.Value)
-                         .ThenBy(x => x.Key, StringComparer.Ordinal))
-            {
-                lines.Add($"{entry.Key}: {entry.Value}");
-            }
+        private static string BuildFeedbackStats(Dictionary<string, int> optionCountsByAnswerText)
+        {
+            var lines = optionCountsByAnswerText
+                .OrderByDescending(x => x.Value)
+                .ThenBy(x => x.Key, StringComparer.Ordinal)
+                .Select(x => $"{x.Key}: {x.Value}")
+                .ToList();
 
             if (lines.Count == 0)
-                return header + "\n(No previous players yet)";
+                return "(No previous players yet)";
 
-            return header + "\n\nPlayers picked:\n" + string.Join("\n", lines);
+            return "Players picked:\n" + string.Join("\n", lines);
         }
+
 
         private static string FormatTop5(List<Top5EntryDto> top5Entries)
         {
